@@ -3,18 +3,24 @@
  */
 package com.jeffshepherd.sortable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author Jeff Shepherd
  *
  */
 public class Listing {
 	
+	@JsonProperty("price")
 	private String price;
 	
+	@JsonProperty("title")
 	private String title;
 	
+	@JsonProperty("manufacturer")
 	private String manufacturer;
 	
+	@JsonProperty("currency")
 	private String currency;
 
 	/**

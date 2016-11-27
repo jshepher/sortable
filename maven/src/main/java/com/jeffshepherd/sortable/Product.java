@@ -5,24 +5,28 @@ package com.jeffshepherd.sortable;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * @author jshepher
+ * Product
+ * @author Jeff Shepherd
  *
  */
 public class Product {
+	
 	@JsonProperty("product_name")
 	private String productName;
 	
+	@JsonProperty("manufacturer")
 	private String manufacturer;
 	
+	@JsonProperty("model")
 	private String model;
 	
 	@JsonProperty("announced-date")
 	private Date announceDate;
 	
+	@JsonProperty("family")
 	private String family;
 
 	public String getProductName() {
@@ -87,7 +91,5 @@ public class Product {
 	 */
 	public void setFamily(String family) {
 		this.family = family;
-	}
-	
-	
+	}	
 }
