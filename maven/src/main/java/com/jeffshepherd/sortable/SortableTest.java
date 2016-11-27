@@ -11,15 +11,6 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 /**
  * Test challenge for sortable.com
  * @author Jeff Shepherd
@@ -29,17 +20,21 @@ public class SortableTest extends JsonObjectManipulator {
 	private final File products;
 	private final File listings;
 	private final File indexDirectory;
-	
+
+	/**
+	 * Construct a new SortableTest.
+	 * @param productsFile file containing a list of Products
+	 * @param listingsFile file containing a list of Listings
+	 * @param indexDirectory directory where the document index will be stored
+	 */
 	public SortableTest(File productsFile, File listingsFile, File indexDirectory) {
 		this.products = productsFile;
 		this.listings = listingsFile;
 		this.indexDirectory = indexDirectory;
 	}
+
 	/**
-	 * @param args
-	 * @throws IOException 
-	 * @throws JsonMappingException 
-	 * @throws JsonParseException 
+	 * Main method
 	 */
 	public static void main(String[] args) throws Exception {
 		String products = args[0];
@@ -49,10 +44,12 @@ public class SortableTest extends JsonObjectManipulator {
 				new File(System.getProperty("user.home"))).run();
 	}
 	
+
+	/**
+	 * Run the sortable.com test and print out the results
+	 * @throws IOException
+	 */
 	public void run() throws IOException {
-		Analyzer analyzer = new StandardAnalyzer();
-		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
-		iwc.setOpenMode(OpenMode.CREATE);
 		ProductIndexer indexer = new ProductIndexer(indexDirectory);
 		Reader productReader = new InputStreamReader(new FileInputStream(products), StandardCharsets.UTF_8);
 		try {

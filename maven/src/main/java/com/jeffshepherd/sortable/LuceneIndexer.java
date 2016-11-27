@@ -9,7 +9,9 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
 /**
- * @author jshepher
+ * Base class which uses Lucene for indexing and searching.
+ * 
+ * @author Jeff Shepherd
  *
  */
 public abstract class LuceneIndexer extends JsonObjectManipulator {
@@ -27,10 +29,17 @@ public abstract class LuceneIndexer extends JsonObjectManipulator {
 		this.indexDirectory = indexDirectory;
 	}
 	
+	/**
+	 * @return Lucene Analyzer
+	 */
 	protected Analyzer getAnalyzer() {
 		return analyzer;
 	}
 	
+	/**
+	 * @return the directory where the Lucene index is located
+	 * @return
+	 */
 	protected File getIndexDirectory() {
 		return indexDirectory;
 	}
