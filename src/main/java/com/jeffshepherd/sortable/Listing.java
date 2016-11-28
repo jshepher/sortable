@@ -1,13 +1,10 @@
-/**
- * 
- */
 package com.jeffshepherd.sortable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
+ * Listing object
  * @author Jeff Shepherd
- *
  */
 public class Listing {
 	
@@ -78,5 +75,4 @@ public class Listing {
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
-
 }

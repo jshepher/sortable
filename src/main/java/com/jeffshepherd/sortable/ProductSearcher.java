@@ -37,7 +37,6 @@ public class ProductSearcher extends LuceneIndexer implements IndexConstants {
 	 * by the number of tokens matched
 	 */
 	private static final float PHRASE_MATCH_BOOST = /*1.2f*/1f;
-
 	
 	/**
 	 * If the 2 best matches differ by less than this score, 
@@ -46,7 +45,7 @@ public class ProductSearcher extends LuceneIndexer implements IndexConstants {
 	private static final float DIFFERING_SCORE = 2.0f;
 	
 	/**
-	 * Maximum number of matches to return
+	 * Maximum number of matches to return on a search (could probably be less)
 	 */
 	private static final int MAX_MATCHES = 5;
 	
@@ -143,11 +142,10 @@ public class ProductSearcher extends LuceneIndexer implements IndexConstants {
 				ts.close();
 			}
 			bqb.add(mbqb.build(), BooleanClause.Occur.MUST);
-			
 
 			ts = analyzer.tokenStream(PRODUCT_NAME, listing.getTitle());
 			cattr = ts.addAttribute(CharTermAttribute.class);
-			
+
 			BooleanQuery.Builder bqbModel = new BooleanQuery.Builder();
 			BooleanQuery.Builder bqbFamily = new BooleanQuery.Builder();
 
@@ -178,7 +176,7 @@ public class ProductSearcher extends LuceneIndexer implements IndexConstants {
 
 			ScoreDoc[] hits = searcher.search(bq, MAX_MATCHES).scoreDocs;
 			if (matches(numSearchTokens, hits)) {
-			
+				// Add the listing to our results
 				Document d = searcher.doc(hits[0].doc);
 				IndexableField field = d.getField(PRODUCT_NAME);
 				String productName = field.stringValue();
@@ -195,7 +193,7 @@ public class ProductSearcher extends LuceneIndexer implements IndexConstants {
 	}
 
 	/**
-	 * Figure out the minimum score the hit should have
+	 * Figure out the minimum score the matched document should have
 	 * @param numSearchTokens number of tokens that was searched for
 	 * @return score
 	 */
@@ -214,8 +212,9 @@ public class ProductSearcher extends LuceneIndexer implements IndexConstants {
 		} else {
 			if (hits[0].score > computeScore(numSearchTokens)) {
 				if (hits.length > 1) {
-					// If we have more than one doc and the scores are very similar
-					// then be conservative and say it doesn't match
+					// If we have more than one matched document and the scores are very similar
+					// then be conservative and say it doesn't match.
+					// It probably means it matched a range of similar objects.
 					if (hits[0].score - hits[1].score > DIFFERING_SCORE) {
 						return true;
 					} else {

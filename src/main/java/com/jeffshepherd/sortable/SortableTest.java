@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jeffshepherd.sortable;
 
 import java.io.File;
@@ -65,6 +62,7 @@ public class SortableTest extends JsonObjectManipulator {
 			Collection<Result> results = searcher.searchForProductsGivenListings(listingReader);
 			for (Result r : results) {
 				System.out.println(getMapper().writeValueAsString(r));
+				System.out.println();
 			}
 		} finally {
 			listingReader.close();

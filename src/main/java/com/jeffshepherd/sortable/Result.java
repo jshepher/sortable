@@ -5,6 +5,11 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/** 
+ * Object holding the matched result
+ * 
+ * @author Jeff Shepherd
+ */
 public class Result {
 	
 	@JsonProperty("product_name")
@@ -48,6 +53,9 @@ public class Result {
 	
 	@Override
 	public boolean equals(Object object) {
+		if (object == this) {
+			return true;
+		}
 		if (object instanceof Result) {
 			Result res = (Result)object;
 			return res.productName.equals(productName);

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jeffshepherd.sortable;
 
 import java.io.BufferedReader;
@@ -27,14 +24,23 @@ public class ProductIndexer extends LuceneIndexer implements IndexConstants {
 	 */
 	private final IndexWriterConfig iwc;
 
+	/**
+	 * Create a new ProductIndexer
+	 * @param indexDirectory where the index should be stored
+	 */
 	public ProductIndexer(File indexDirectory) {
 		super(indexDirectory);
 		iwc = new IndexWriterConfig(getAnalyzer());
 		iwc.setOpenMode(OpenMode.CREATE);
 	}
 	
-	private String fixModel(String model) {
-		StringTokenizer st = new StringTokenizer(model, " ");
+	/**
+	 * Combine a multiple word phase into one word.
+	 * @param phrase phase to fix
+	 * @return phrase as one "word"
+	 */
+	private String combineIntoOneWord(String phrase) {
+		StringTokenizer st = new StringTokenizer(phrase, " ");
 		StringBuilder sb = new StringBuilder();
 		if (st.countTokens() > 1) {
 			while(st.hasMoreTokens()) {
@@ -45,18 +51,33 @@ public class ProductIndexer extends LuceneIndexer implements IndexConstants {
 		return null;
 	}
 	
+	/**
+	 * Tokenize a field and put it in the document.
+	 * @param document the document to add the field
+	 * @param fieldName the name of the field to add to the document
+	 * @param fieldValue the value of the field to be tokenized
+	 * @throws IOException
+	 */
 	private void parseField(Document document, String fieldName, String fieldValue) throws IOException {
 		parseField(document, fieldName, fieldValue, false);
 	}
 	
+	/**
+	 * Tokenize a field and put it in the document.
+	 * @param document the document to add the field
+	 * @param fieldName the name of the field to add to the document
+	 * @param fieldValue the value of the field to be tokenized
+	 * @param extraTokenize if true do some extra tokenization for whitespaces
+	 * @throws IOException
+	 */
 	private void parseField(Document document, String fieldName, String fieldValue, boolean extraTokenize) throws IOException {
 		if (fieldValue != null) {
 			document.add(new TextField(fieldName, fieldValue, Store.YES));
+			// TODO: We should probably put this in a custom analyzer with a special tokenizer
 			if (extraTokenize) {
 				StringTokenizer st = new StringTokenizer(fieldValue," \t\n\r\f_-");
 				StringBuilder sb = new StringBuilder();
 				while (st.hasMoreTokens()) {
-					//document.add(new TextField(fieldName, st.nextToken(), Store.YES));
 					sb.append(st.nextToken());
 					if (st.hasMoreTokens()) {
 						sb.append(' ');
@@ -86,7 +107,7 @@ public class ProductIndexer extends LuceneIndexer implements IndexConstants {
 				parseField(d, FAMILY, p.getFamily());
 				parseField(d, MODEL, p.getModel());
 				// Sometimes the model is 1 or more words. Combine them into 1 word for indexing
-				parseField(d, MODEL,fixModel(p.getModel()));
+				parseField(d, MODEL,combineIntoOneWord(p.getModel()));
 				writer.addDocument(d);
 			}
 		} finally {

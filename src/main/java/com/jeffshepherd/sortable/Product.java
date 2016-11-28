@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jeffshepherd.sortable;
 
 import java.util.Date;
@@ -8,7 +5,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Product
+ * Product object
  * @author Jeff Shepherd
  *
  */
@@ -29,12 +26,18 @@ public class Product {
 	@JsonProperty("family")
 	private String family;
 
+	/**
+	 * @return the product name
+	 */
 	public String getProductName() {
 		return productName;
 	}
 
-	public void setProductName(String product_Name) {
-		this.productName = product_Name;
+	/**
+	 * @param productName the product name to use
+	 */
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 	/**
