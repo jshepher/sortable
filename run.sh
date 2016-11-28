@@ -15,7 +15,7 @@ fi
 
 wget --quiet https://s3.amazonaws.com/sortable-public/challenge/challenge_data_20110429.tar.gz
 tar zxf challenge_data_20110429.tar.gz
-mvn install
+mvn install -q -e
 mvn -q exec:java
 rm challenge_data_20110429.tar.gz products.txt listings.txt
 
