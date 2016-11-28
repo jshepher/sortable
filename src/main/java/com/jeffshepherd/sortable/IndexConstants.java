@@ -5,7 +5,7 @@ package com.jeffshepherd.sortable;
  * @author Jeff Shepherd
  */
 public interface IndexConstants {
-	public static final String PRODUCT_NAME = "productName";
+	public static final String PRODUCT_NAME = "product";
 
 	public static final String MANUFACTURER = "manufacturer";
 	

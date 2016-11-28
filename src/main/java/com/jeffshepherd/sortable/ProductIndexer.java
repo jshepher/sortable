@@ -44,6 +44,29 @@ public class ProductIndexer extends LuceneIndexer implements IndexConstants {
 		}
 		return null;
 	}
+	
+	private void parseField(Document document, String fieldName, String fieldValue) throws IOException {
+		parseField(document, fieldName, fieldValue, false);
+	}
+	
+	private void parseField(Document document, String fieldName, String fieldValue, boolean extraTokenize) throws IOException {
+		if (fieldValue != null) {
+			document.add(new TextField(fieldName, fieldValue, Store.YES));
+			if (extraTokenize) {
+				StringTokenizer st = new StringTokenizer(fieldValue," \t\n\r\f_-");
+				StringBuilder sb = new StringBuilder();
+				while (st.hasMoreTokens()) {
+					//document.add(new TextField(fieldName, st.nextToken(), Store.YES));
+					sb.append(st.nextToken());
+					if (st.hasMoreTokens()) {
+						sb.append(' ');
+					}
+				}
+				document.add(new TextField(fieldName, sb.toString(), Store.YES));
+			}
+		}
+	}
+	
 	/**
 	 * Create an index for a list of Products
 	 * @param products stream containing Products as JSON
@@ -58,15 +81,12 @@ public class ProductIndexer extends LuceneIndexer implements IndexConstants {
 			while ((line = br.readLine()) != null) {
 				Product p = getMapper().readValue(line, Product.class);
 				Document d = new Document();
-				d.add(new TextField(PRODUCT_NAME, p.getProductName(), Store.YES));
-				d.add(new TextField(MANUFACTURER, p.getManufacturer(), Store.YES));
-				d.add(new TextField(MODEL, p.getModel(), Store.YES));
+				parseField(d, PRODUCT_NAME, p.getProductName(), true);
+				parseField(d, MANUFACTURER, p.getManufacturer());
+				parseField(d, FAMILY, p.getFamily());
+				parseField(d, MODEL, p.getModel());
 				// Sometimes the model is 1 or more words. Combine them into 1 word for indexing
-				String fixedModel = fixModel(p.getModel());
-				if (fixedModel != null)
-					d.add(new TextField(MODEL, fixedModel, Store.YES));
-				if (p.getFamily() != null)
-					d.add(new TextField(FAMILY, p.getFamily(), Store.YES));
+				parseField(d, MODEL,fixModel(p.getModel()));
 				writer.addDocument(d);
 			}
 		} finally {
