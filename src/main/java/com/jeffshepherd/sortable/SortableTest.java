@@ -34,6 +34,10 @@ public class SortableTest extends JsonObjectManipulator {
 	 * Main method
 	 */
 	public static void main(String[] args) throws Exception {
+		if (args.length != 2) {
+			System.err.println("Usage: com.jeffshepherd.sortable.SortableTest <products file> <listings file>");
+			System.exit(1);
+		}
 		String products = args[0];
 		String listings = args[1];
 		
