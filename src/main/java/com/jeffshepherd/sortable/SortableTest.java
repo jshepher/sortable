@@ -14,8 +14,19 @@ import java.util.Collection;
  *
  */
 public class SortableTest extends JsonObjectManipulator {
+	/**
+	 * File containing a list of products in JSON format (Product object)
+	 */
 	private final File products;
+	
+	/**
+	 * File containing a list of listings in JSON format (Listing object)
+	 */
 	private final File listings;
+	
+	/**
+	 * Directory where to put the document index
+	 */
 	private final File indexDirectory;
 
 	/**
