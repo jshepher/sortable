@@ -11,8 +11,9 @@ fi
 curl=$(which curl 2>/dev/null)
 wget=$(which wget 2>/dev/null)
 if [ -z "$wget" -a -z "$curl" ]; then
-    echo "wget needs to be installed."
+    echo "wget or curl needs to be installed."
     echo Either run "apt-get install wget" or "yum install wget" depending on your distribution
+    exit 1
 fi
 
 if [ ! -z "$curl" ]; then
