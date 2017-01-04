@@ -4,7 +4,7 @@ set -e
 maven=$(which mvn 2>/dev/null)
 if [ -z "$maven" ]; then
     echo "Maven needs to be installed."
-    echo Either "run apt-get install maven" or "yum install maven" depending on your distribution.
+    echo Either run "apt-get install maven" or "yum install maven" depending on your distribution.
     exit 1
 fi
 
