@@ -1,13 +1,13 @@
 #!/bin/sh
 
-maven=$(which mvn)
+maven=$(which mvn 2>/dev/null)
 if [ -z "$maven" ]; then
     echo "Maven needs to be installed."
     echo Either "run apt-get install maven" or "yum install maven" depending on your distribution.
     exit 1
 fi
 
-wget=$(which wget)
+wget=$(which wget 2>/dev/null)
 if [ -z "$wget" ]; then
     echo "wget needs to be installed."
     echo Either run "apt-get install wget" or "yum install wget" depending on your distribution
